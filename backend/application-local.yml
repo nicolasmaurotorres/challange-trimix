@@ -1,0 +1,19 @@
+logging:
+  level:
+    root: INFO
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: 123456
+    url: jdbc:mysql://localhost:33060/challenge?useSSL=false&allowPublicKeyRetrieval=true
+    username: api-user
+  flyway:
+    password: 123456
+    url: jdbc:mysql://localhost:33060/challenge?useSSL=false&allowPublicKeyRetrieval=true
+    user: api-user
+    baselineOnMigrate: true
+    locations: filesystem:src/main/resources/db/migration
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
