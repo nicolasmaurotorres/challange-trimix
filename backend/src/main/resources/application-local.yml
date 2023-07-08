@@ -10,3 +10,6 @@ spring:
     user: api-user
     baselineOnMigrate: true
     locations: filesystem:backend/src/main/resources/db/migration
+  devtools:
+    livereload:
+      enabled: true
