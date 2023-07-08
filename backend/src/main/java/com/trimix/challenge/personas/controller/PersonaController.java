@@ -32,7 +32,7 @@ public class PersonaController {
             @RequestParam("tipoDocumento") Optional<TipoDocumentoEnum> tipoDocumento,
             @RequestParam("nombre") Optional<String> nombre) {
         List<PersonaDto> personasResponse = personaServiceImpl.findByFilters(tipoDocumento, nombre);
-        return new ResponseEntity<>(personasResponse, HttpStatus.OK);
+        return new ResponseEntity<List<PersonaDto>>(personasResponse, HttpStatus.OK);
     }
 
     @PostMapping("/personas")

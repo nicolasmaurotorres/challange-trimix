@@ -2,6 +2,7 @@ package com.trimix.challenge.personas.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,8 +45,10 @@ public class PersonaServiceImpl implements PersonaService {
 
     @Override
     public List<PersonaDto> findByFilters(Optional<TipoDocumentoEnum> tipoDocumento, Optional<String> nombre) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByFilters'");
+        return personasRepository.findAll()
+                .stream()
+                .map(personaMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override

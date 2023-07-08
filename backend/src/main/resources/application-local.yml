@@ -9,4 +9,4 @@ spring:
     url: jdbc:mysql://localhost:33060/challenge?useSSL=false&allowPublicKeyRetrieval=true
     user: api-user
     baselineOnMigrate: true
-    locations: filesystem:src/main/resources/db/migration
+    locations: filesystem:backend/src/main/resources/db/migration
