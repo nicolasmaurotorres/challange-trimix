@@ -14,7 +14,7 @@ import lombok.Getter;
 @Getter
 public enum TipoDocumentoEnum {
 
-    DNI("Dni"), PASAPORTE("Pasaporte"), CEDULA("C\u00E9dula");
+    Dni("Dni"), Pasaporte("Pasaporte"), Cédula("Cédula");
 
     private String tipo;
 
@@ -27,7 +27,7 @@ public enum TipoDocumentoEnum {
         String[] names = new String[states.length];
 
         for (int i = 0; i < states.length; i++) {
-            names[i] = states[i].name();
+            names[i] = states[i].getTipo();
         }
 
         return names;
