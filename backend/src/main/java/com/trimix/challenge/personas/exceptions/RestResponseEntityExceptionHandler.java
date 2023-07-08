@@ -62,4 +62,12 @@ public class RestResponseEntityExceptionHandler {
                 + Arrays.toString(TipoDocumentoEnum.names()) + " se ingreso el valor: " + valorUsuario);
         return new ResponseEntity<Map<String, String>>(resp, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(UnsupportedOperationException.class)
+    public ResponseEntity<Map<String, String>> estamosTrabajando(UnsupportedOperationException exception) {
+        Map<String, String> resp = new HashMap<String, String>();
+        resp.put("error", "Funcionalidad no disponible");
+        return new ResponseEntity<Map<String, String>>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }
