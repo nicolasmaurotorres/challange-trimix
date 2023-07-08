@@ -1,0 +1,13 @@
+logging:
+  level:
+    root: INFO
+spring:
+  profiles:
+    active: local
+  mvc:
+    format:
+      date: yyyy-MM-dd
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
