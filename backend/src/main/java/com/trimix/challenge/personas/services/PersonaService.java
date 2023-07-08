@@ -15,10 +15,14 @@ public interface PersonaService {
 
     List<PersonaDto> findByNombre(String nombre);
 
+    List<PersonaDto> findAll();
+
     List<PersonaDto> findByFilters(Optional<TipoDocumentoEnum> tipoDocumento, Optional<String> nombre);
 
     void createPersona(PersonaDto personaDto);
 
     boolean isPersonaPresent(long id);
+
+    List<PersonaDto> findByNombreAndTipoDocumento(String nombre, TipoDocumentoEnum tipo);
 
 }

@@ -12,6 +12,7 @@ import com.trimix.challenge.personas.entity.PersonaEntity;
 import com.trimix.challenge.personas.enums.TipoDocumentoEnum;
 import com.trimix.challenge.personas.mapper.PersonaMapper;
 import com.trimix.challenge.personas.repository.PersonaRepository;
+import com.trimix.challenge.personas.business.FiltroPersonaStrategy;
 
 @Service
 public class PersonaServiceImpl implements PersonaService {
@@ -21,6 +22,8 @@ public class PersonaServiceImpl implements PersonaService {
 
     @Autowired
     PersonaRepository personasRepository;
+
+    FiltroPersonaStrategy filtroPersonaStrategy;
 
     @Override
     public boolean isPersonaPresent(long id) {
@@ -41,22 +44,39 @@ public class PersonaServiceImpl implements PersonaService {
 
     @Override
     public List<PersonaDto> findByTipoDocumento(TipoDocumentoEnum tipo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByTipoDocumento'");
+        return personasRepository.findByPerTipoDocumento(tipo).stream()
+                .map(personaMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<PersonaDto> findByNombre(String nombre) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByNombre'");
+        return personasRepository.findByPerNombre(nombre).stream()
+                .map(personaMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<PersonaDto> findByFilters(Optional<TipoDocumentoEnum> tipoDocumento, Optional<String> nombre) {
+    public List<PersonaDto> findByNombreAndTipoDocumento(String nombre, TipoDocumentoEnum tipo) {
+        return personasRepository.findByPerTipoDocumentoAndPerNombre(tipo, nombre)
+                .stream()
+                .map(personaMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PersonaDto> findAll() {
         return personasRepository.findAll()
                 .stream()
                 .map(personaMapper::toDto)
                 .collect(Collectors.toList());
+
+    }
+
+    @Override
+    public List<PersonaDto> findByFilters(Optional<TipoDocumentoEnum> tipoDocumento, Optional<String> nombre) {
+        filtroPersonaStrategy = new FiltroPersonaStrategy(this, nombre, tipoDocumento);
+        return filtroPersonaStrategy.get();
     }
 
     @Override
