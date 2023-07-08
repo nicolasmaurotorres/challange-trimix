@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.trimix.challenge.personas.dto.PersonaDto;
+import com.trimix.challenge.personas.entity.PersonaEntity;
 import com.trimix.challenge.personas.enums.TipoDocumentoEnum;
 import com.trimix.challenge.personas.mapper.PersonaMapper;
 import com.trimix.challenge.personas.repository.PersonaRepository;
@@ -22,8 +23,15 @@ public class PersonaServiceImpl implements PersonaService {
     PersonaRepository personasRepository;
 
     @Override
+    public boolean isPersonaPresent(long id) {
+        return personasRepository.findById(id).isPresent();
+    }
+
+    @Override
     public void deletePersona(long id) {
-        personasRepository.deleteById(id);
+        if (isPersonaPresent(id)) {
+            personasRepository.deleteById(id);
+        }
     }
 
     @Override
@@ -53,8 +61,8 @@ public class PersonaServiceImpl implements PersonaService {
 
     @Override
     public void createPersona(PersonaDto personaDto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createPersona'");
+        PersonaEntity nuevaPersona = personaMapper.toEntity(personaDto);
+        personasRepository.save(nuevaPersona);
     }
 
 }

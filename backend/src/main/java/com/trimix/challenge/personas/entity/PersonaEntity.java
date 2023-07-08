@@ -1,6 +1,6 @@
 package com.trimix.challenge.personas.entity;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import com.trimix.challenge.personas.enums.TipoDocumentoEnum;
 
@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class PersonaEntity {
     @Id()
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long perId;
 
     @NotNull
@@ -42,7 +42,7 @@ public class PersonaEntity {
 
     @NotNull
     @Temporal(TemporalType.DATE)
-    private Date perFechaNacimiento;
+    private LocalDate perFechaNacimiento;
 
     @NotNull
     @NotBlank

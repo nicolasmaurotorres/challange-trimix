@@ -8,17 +8,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.trimix.challenge.personas.dto.PersonaDto;
 import com.trimix.challenge.personas.enums.TipoDocumentoEnum;
+import com.trimix.challenge.personas.exceptions.PersonaNotFoundException;
 import com.trimix.challenge.personas.services.PersonaServiceImpl;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -37,21 +41,27 @@ public class PersonaController {
 
     @PostMapping("/personas")
     @Transactional
-    public ResponseEntity<Void> postPersona(PersonaDto personaDto) {
+    public ResponseEntity<Void> postPersona(@Valid @RequestBody PersonaDto personaDto) {
         personaServiceImpl.createPersona(personaDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/personas")
     @Transactional
-    public ResponseEntity<Void> editPersona(PersonaDto personaDto) {
+    public ResponseEntity<Void> editPersona(@Valid @RequestBody PersonaDto personaDto) {
+        if (!personaServiceImpl.isPersonaPresent(personaDto.getId())) {
+            throw new PersonaNotFoundException("No se encontro la persona con el id " + personaDto.getId());
+        }
         personaServiceImpl.editPersona(personaDto);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/personas/{perId}")
     @Transactional
-    public ResponseEntity<Void> deletePersona(@RequestParam("perId") Long perId) {
+    public ResponseEntity<Void> deletePersona(@PathVariable("perId") Long perId) {
+        if (!personaServiceImpl.isPersonaPresent(perId)) {
+            throw new PersonaNotFoundException("No se encontro la persona con el id " + perId);
+        }
         personaServiceImpl.deletePersona(perId);
         return new ResponseEntity<>(HttpStatus.OK);
     }

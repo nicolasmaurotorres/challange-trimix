@@ -19,4 +19,6 @@ public interface PersonaService {
 
     void createPersona(PersonaDto personaDto);
 
+    boolean isPersonaPresent(long id);
+
 }
