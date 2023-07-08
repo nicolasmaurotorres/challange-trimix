@@ -1,0 +1,11 @@
+com\trimix\challenge\personas\services\PersonaServiceImpl.class
+com\trimix\challenge\personas\enums\TipoDocumentoEnum.class
+com\trimix\challenge\personas\controller\PersonaController.class
+com\trimix\challenge\personas\mapper\PersonaMapper.class
+com\trimix\challenge\personas\repository\PersonaRepository.class
+com\trimix\challenge\personas\dto\PersonaDto.class
+com\trimix\challenge\ChallengeApplication.class
+com\trimix\challenge\personas\exceptions\RestResponseEntityExceptionHandler.class
+com\trimix\challenge\personas\mapper\PersonaMapperImpl.class
+com\trimix\challenge\personas\services\PersonaService.class
+com\trimix\challenge\personas\entity\PersonaEntity.class

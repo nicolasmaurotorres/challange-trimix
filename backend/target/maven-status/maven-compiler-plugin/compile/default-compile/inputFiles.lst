@@ -1,0 +1,10 @@
+C:\proyectos\challenges\trimix\backend\src\main\java\com\trimix\challenge\personas\services\PersonaServiceImpl.java
+C:\proyectos\challenges\trimix\backend\src\main\java\com\trimix\challenge\personas\services\PersonaService.java
+C:\proyectos\challenges\trimix\backend\src\main\java\com\trimix\challenge\personas\mapper\PersonaMapper.java
+C:\proyectos\challenges\trimix\backend\src\main\java\com\trimix\challenge\personas\controller\PersonaController.java
+C:\proyectos\challenges\trimix\backend\src\main\java\com\trimix\challenge\personas\entity\PersonaEntity.java
+C:\proyectos\challenges\trimix\backend\src\main\java\com\trimix\challenge\personas\repository\PersonaRepository.java
+C:\proyectos\challenges\trimix\backend\src\main\java\com\trimix\challenge\personas\dto\PersonaDto.java
+C:\proyectos\challenges\trimix\backend\src\main\java\com\trimix\challenge\personas\exceptions\RestResponseEntityExceptionHandler.java
+C:\proyectos\challenges\trimix\backend\src\main\java\com\trimix\challenge\ChallengeApplication.java
+C:\proyectos\challenges\trimix\backend\src\main\java\com\trimix\challenge\personas\enums\TipoDocumentoEnum.java
