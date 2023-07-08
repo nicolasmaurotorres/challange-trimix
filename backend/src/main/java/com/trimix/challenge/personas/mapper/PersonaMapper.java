@@ -17,7 +17,7 @@ public interface PersonaMapper {
     @Mapping(source = "perTipoDocumento", target = "tipoDocumento")
     PersonaDto toDto(PersonaEntity source);
 
-    @Mapping(source = "id", target = "perId")
+    @Mapping(target = "perId", ignore = true)
     @Mapping(source = "nombre", target = "perNombre")
     @Mapping(source = "apellido", target = "perApellido")
     @Mapping(source = "fechaNacimiento", target = "perFechaNacimiento")
