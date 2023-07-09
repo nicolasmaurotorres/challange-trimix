@@ -24,7 +24,7 @@ const opcionesFiltro: TipoDocumentoOpciones[] = [
 ];
 
 interface TipoDocumentoIonSelectProps {
-  value: TipoDocumentoEnumDto | TipoDocumentoEnum;
+  value: TipoDocumentoEnumDto | TipoDocumentoEnum | undefined;
   setValue: Dispatch<SetStateAction<any>>;
   isFiltro: boolean;
   name: string;

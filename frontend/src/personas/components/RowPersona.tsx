@@ -2,6 +2,7 @@ import React from "react";
 import { IonCol, IonIcon, IonLabel, IonRow } from "@ionic/react";
 import { pencil, trash } from "ionicons/icons";
 import PersonaDto from "../types/PersonaDto";
+import { useHistory } from "react-router";
 
 const RowPersona: React.FC<PersonaDto> = ({
   id,
@@ -11,6 +12,7 @@ const RowPersona: React.FC<PersonaDto> = ({
   tipoDocumento,
   fechaNacimiento,
 }) => {
+  const history = useHistory();
   return (
     <IonRow>
       <IonCol>
@@ -32,7 +34,20 @@ const RowPersona: React.FC<PersonaDto> = ({
         <IonLabel>{fechaNacimiento}</IonLabel>
       </IonCol>
       <IonCol>
-        <IonIcon icon={pencil} color="primary" />
+        <IonIcon
+          icon={pencil}
+          color="primary"
+          onClick={() => {
+            history.push("/personas/" + id, {
+              id,
+              nombre,
+              apellido,
+              numeroDocumento,
+              tipoDocumento,
+              fechaNacimiento,
+            });
+          }}
+        />
       </IonCol>
       <IonCol>
         <IonIcon icon={trash} color="danger" />

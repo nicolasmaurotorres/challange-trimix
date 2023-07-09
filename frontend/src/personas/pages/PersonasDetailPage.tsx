@@ -10,48 +10,64 @@ import {
   IonRow,
   IonTitle,
 } from "@ionic/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import PersonaDto from "../types/PersonaDto";
-import { TipoDocumentoEnumDto } from "../types/TipoDocumentoTypes";
 import TipoDocumentoIonSelect from "../components/TipoDocumentoIonSelect";
 import AxiosInstance from "../requests/AxiosInstance";
-import { useHistory } from "react-router";
-
-const initData: PersonaDto = {
-  nombre: "",
-  apellido: "",
-  fechaNacimiento: "",
-  numeroDocumento: "",
-  tipoDocumento: TipoDocumentoEnumDto.Dni,
-};
+import { useHistory, useLocation, useParams } from "react-router";
+import { TipoDocumentoEnumDto } from "../types/TipoDocumentoTypes";
 
 const PersonaDetailPage: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [persona, setPersona] = useState<PersonaDto>();
+  const history = useHistory();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (id) {
+      setIsEdit(true);
+      setPersona(location.state as PersonaDto);
+    }
+  }, []);
+
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<PersonaDto>({
+    values: {
+      id: persona?.id,
+      nombre: persona?.nombre ?? "",
+      apellido: persona?.apellido ?? "",
+      fechaNacimiento: persona?.fechaNacimiento ?? "",
+      numeroDocumento: persona?.numeroDocumento ?? "",
+      tipoDocumento: persona?.tipoDocumento ?? TipoDocumentoEnumDto.Dni,
+    },
     defaultValues: {
-      nombre: "",
-      apellido: "",
-      fechaNacimiento: "",
-      numeroDocumento: "",
-      tipoDocumento: TipoDocumentoEnumDto.Dni,
+      id: persona?.id,
+      nombre: persona?.nombre ?? "",
+      apellido: persona?.apellido ?? "",
+      fechaNacimiento: persona?.fechaNacimiento ?? "",
+      numeroDocumento: persona?.numeroDocumento ?? "",
+      tipoDocumento: persona?.tipoDocumento ?? TipoDocumentoEnumDto.Dni,
     },
   });
 
-  const history = useHistory();
-
   const onSubmit: SubmitHandler<PersonaDto> = async (data) => {
-    const resp = await AxiosInstance.post("/personas", data);
-    if (resp.status >= 200 && resp.status < 300) {
+    let resp;
+    if (isEdit) {
+      resp = await AxiosInstance.put("/personas", data);
+    } else {
+      resp = await AxiosInstance.post("/personas", data);
+    }
+    if (resp && resp.status >= 200 && resp.status < 300) {
       history.goBack();
     }
   };
 
-  const [persona, setPersona] = useState<PersonaDto>(initData);
   return (
     <IonPage>
       <IonContent>
@@ -81,11 +97,13 @@ const PersonaDetailPage: React.FC = () => {
                       labelPlacement="floating"
                       label="Nombre"
                       type="text"
-                      value={persona.nombre}
+                      value={persona?.nombre}
                       name="nombre"
                       onIonInput={(e) => {
-                        setPersona({ ...persona, nombre: e.detail.value! });
-                        field.onChange(e.detail.value!);
+                        if (persona) {
+                          setPersona({ ...persona, nombre: e.detail.value! });
+                          field.onChange(e.detail.value!);
+                        }
                       }}
                     />
                   )}
@@ -109,10 +127,12 @@ const PersonaDetailPage: React.FC = () => {
                       label="Apellido"
                       type="text"
                       name="apellido"
-                      value={persona.apellido}
+                      value={persona?.apellido}
                       onIonInput={(e) => {
-                        setPersona({ ...persona, apellido: e.detail.value! });
-                        field.onChange(e.detail.value!);
+                        if (persona) {
+                          setPersona({ ...persona, apellido: e.detail.value! });
+                          field.onChange(e.detail.value!);
+                        }
                       }}
                     />
                   )}
@@ -139,10 +159,12 @@ const PersonaDetailPage: React.FC = () => {
                       {...field}
                       name="tipoDocumento"
                       isFiltro={false}
-                      value={persona.tipoDocumento}
+                      value={persona?.tipoDocumento}
                       setValue={(value) => {
-                        setPersona({ ...persona, tipoDocumento: value });
-                        field.onChange(value);
+                        if (persona) {
+                          setPersona({ ...persona, tipoDocumento: value });
+                          field.onChange(value);
+                        }
                       }}
                     />
                   )}
@@ -166,13 +188,15 @@ const PersonaDetailPage: React.FC = () => {
                       name="numeroDocumento"
                       max={11}
                       maxlength={11}
-                      value={persona.numeroDocumento}
+                      value={persona?.numeroDocumento}
                       onIonInput={(e) => {
-                        setPersona({
-                          ...persona,
-                          numeroDocumento: e.detail.value!,
-                        });
-                        field.onChange(e.detail.value!);
+                        if (persona) {
+                          setPersona({
+                            ...persona,
+                            numeroDocumento: e.detail.value!,
+                          });
+                          field.onChange(e.detail.value!);
+                        }
                       }}
                     />
                   )}
@@ -196,13 +220,15 @@ const PersonaDetailPage: React.FC = () => {
                       labelPlacement="floating"
                       label="Fecha Nacimiento"
                       type="date"
-                      value={persona.fechaNacimiento}
+                      value={persona?.fechaNacimiento}
                       onIonChange={(e) => {
-                        setPersona({
-                          ...persona,
-                          fechaNacimiento: e.detail.value!,
-                        });
-                        field.onChange(e.detail.value!);
+                        if (persona) {
+                          setPersona({
+                            ...persona,
+                            fechaNacimiento: e.detail.value!,
+                          });
+                          field.onChange(e.detail.value!);
+                        }
                       }}
                     />
                   )}
@@ -213,7 +239,7 @@ const PersonaDetailPage: React.FC = () => {
               </IonCol>
               <IonCol offset="5" className="ion-padding-vertical">
                 <IonButton type="submit" fill="solid">
-                  Crear
+                  {isEdit ? "Editar" : "Crear"}
                 </IonButton>
               </IonCol>
             </IonRow>
