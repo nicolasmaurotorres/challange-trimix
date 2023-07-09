@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class PersonaController {
     PersonaServiceImpl personaServiceImpl;
 
     @GetMapping("/personas")
+    @CrossOrigin(origins = "http://localhost:8100")
     public ResponseEntity<List<PersonaDto>> getPersonasByFiltros(
             @RequestParam("tipoDocumento") Optional<TipoDocumentoEnum> tipoDocumento,
             @RequestParam("nombre") Optional<String> nombre) {
@@ -40,6 +42,7 @@ public class PersonaController {
     }
 
     @PostMapping("/personas")
+    @CrossOrigin(origins = "http://localhost:8100")
     @Transactional
     public ResponseEntity<Void> postPersona(@Valid @RequestBody PersonaDto personaDto) {
         personaServiceImpl.createPersona(personaDto);
@@ -47,6 +50,7 @@ public class PersonaController {
     }
 
     @PutMapping("/personas")
+    @CrossOrigin(origins = "http://localhost:8100")
     @Transactional
     public ResponseEntity<Void> editPersona(@Valid @RequestBody PersonaDto personaDto) {
         if (!personaServiceImpl.isPersonaPresent(personaDto.getId())) {
@@ -57,6 +61,7 @@ public class PersonaController {
     }
 
     @DeleteMapping("/personas/{perId}")
+    @CrossOrigin(origins = "http://localhost:8100")
     @Transactional
     public ResponseEntity<Void> deletePersona(@PathVariable("perId") Long perId) {
         if (!personaServiceImpl.isPersonaPresent(perId)) {
