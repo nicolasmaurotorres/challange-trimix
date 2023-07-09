@@ -39,7 +39,9 @@ public class PersonaServiceImpl implements PersonaService {
 
     @Override
     public void editPersona(PersonaDto persona) {
-        personasRepository.save(personaMapper.toEntity(persona));
+        PersonaEntity toEdit = personasRepository.findById(persona.getId()).get();
+        toEdit.update(personaMapper.toEntity(persona));
+        personasRepository.save(toEdit);
     }
 
     @Override

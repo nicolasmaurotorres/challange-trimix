@@ -52,4 +52,12 @@ public class PersonaEntity {
     @Enumerated(EnumType.STRING)
     private TipoDocumentoEnum perTipoDocumento;
 
+    public void update(PersonaEntity entity) {
+        this.perApellido = entity.getPerApellido();
+        this.perFechaNacimiento = entity.getPerFechaNacimiento();
+        this.perNombre = entity.getPerNombre();
+        this.perNumeroDocumento = entity.getPerNumeroDocumento();
+        this.perTipoDocumento = entity.getPerTipoDocumento();
+    }
+
 }
