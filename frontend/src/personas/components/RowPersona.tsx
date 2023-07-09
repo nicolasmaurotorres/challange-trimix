@@ -1,8 +1,7 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
-import { IonAlert, IonCol, IonIcon, IonLabel, IonRow } from "@ionic/react";
+import React, { Dispatch, SetStateAction } from "react";
+import { IonCol, IonIcon, IonLabel, IonRow } from "@ionic/react";
 import { pencil, trash } from "ionicons/icons";
 import { useHistory } from "react-router";
-import AxiosInstance from "../requests/AxiosInstance";
 import { TipoDocumentoEnumDto } from "../types/TipoDocumentoTypes";
 
 interface RowPersonaProps {
