@@ -1,4 +1,4 @@
-import TipoDocumentoEnum from "./TipoDocumentoEnum";
+import TipoDocumentoEnumDto from "./TipoDocumentoEnum";
 
 interface PersonaDto {
   id: number;
@@ -6,7 +6,7 @@ interface PersonaDto {
   apellido: string;
   fechaNacimiento: string;
   numeroDocumento: string;
-  tipoDocumento: TipoDocumentoEnum;
+  tipoDocumento: TipoDocumentoEnumDto;
 }
 
 export default PersonaDto;

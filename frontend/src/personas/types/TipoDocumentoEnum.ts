@@ -1,7 +1,7 @@
-enum TipoDocumentoEnum {
-  dni,
-  pasaporte,
-  cédula,
+enum TipoDocumentoEnumDto {
+  dni = "Dni",
+  pasaporte = "Pasaporte",
+  cédula = "Cédula",
 }
 
-export default TipoDocumentoEnum;
+export default TipoDocumentoEnumDto;

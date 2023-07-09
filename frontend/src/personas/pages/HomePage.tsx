@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   IonButton,
   IonCol,
@@ -7,13 +7,16 @@ import {
   IonIcon,
   IonInput,
   IonItem,
+  IonLabel,
   IonPage,
   IonRow,
   IonSelect,
   IonSelectOption,
   IonTitle,
 } from "@ionic/react";
-import { filter, addCircle, closeCircle } from "ionicons/icons";
+import { filter, addCircle, closeCircle, pencil, trash } from "ionicons/icons";
+import PersonaDto from "../types/PersonaDto";
+import TipoDocumentoEnumDto from "../types/TipoDocumentoEnum";
 //import styles from "./HomePage.module.scss";
 
 enum TipoDocumentoEnum {
@@ -28,6 +31,20 @@ const HomePage: React.FC = () => {
   const [nameFilter, setNameFilter] = useState<string | undefined>(undefined);
   const [tipoDocumentoFilter, setTipoDocumentoFilter] =
     useState<TipoDocumentoEnum>(TipoDocumentoEnum.todos);
+  const [personas, setPersonas] = useState<PersonaDto[]>([]);
+
+  useEffect(() => {
+    setPersonas([
+      {
+        id: 1,
+        nombre: "pepe",
+        apellido: "guarani",
+        fechaNacimiento: "2020-01-01",
+        numeroDocumento: "12345678",
+        tipoDocumento: TipoDocumentoEnumDto.dni,
+      },
+    ]);
+  }, []);
 
   return (
     <IonPage>
@@ -36,12 +53,12 @@ const HomePage: React.FC = () => {
           {showFilters && (
             <>
               <IonRow>
-                <IonCol size="10">
+                <IonCol size="11">
                   <IonItem>
                     <IonTitle>Filtros</IonTitle>
                   </IonItem>
                 </IonCol>
-                <IonCol size="2" class="ion-padding-start ion-padding-top">
+                <IonCol class="ion-padding-start ion-padding-top">
                   <IonIcon
                     icon={closeCircle}
                     size="large"
@@ -53,7 +70,7 @@ const HomePage: React.FC = () => {
                 </IonCol>
               </IonRow>
               <IonRow>
-                <IonCol>
+                <IonCol size="6">
                   <IonInput
                     fill="outline"
                     labelPlacement="floating"
@@ -65,7 +82,7 @@ const HomePage: React.FC = () => {
                     }}
                   ></IonInput>
                 </IonCol>
-                <IonCol>
+                <IonCol size="6">
                   <IonItem>
                     <IonSelect
                       fill="outline"
@@ -128,7 +145,68 @@ const HomePage: React.FC = () => {
               ></IonIcon>
             </IonCol>
           </IonRow>
-          <IonRow></IonRow>
+          <IonRow>
+            <IonCol>
+              <IonLabel>Id</IonLabel>
+            </IonCol>
+            <IonCol size="2">
+              <IonLabel>Nombre</IonLabel>
+            </IonCol>
+            <IonCol>
+              <IonLabel>Apellido</IonLabel>
+            </IonCol>
+            <IonCol size="2">
+              <IonLabel>Numero Documento</IonLabel>
+            </IonCol>
+            <IonCol size="2">
+              <IonLabel>Tipo Documento</IonLabel>
+            </IonCol>
+            <IonCol size="2">
+              <IonLabel>Fecha Nacimiento</IonLabel>
+            </IonCol>
+            <IonCol>
+              <IonLabel>Editar</IonLabel>
+            </IonCol>
+            <IonCol>
+              <IonLabel>Borrar</IonLabel>
+            </IonCol>
+          </IonRow>
+          {personas.length === 0 && (
+            <IonRow>
+              <IonCol offset="6">
+                <IonTitle>No hay personas a mostrar</IonTitle>
+              </IonCol>
+            </IonRow>
+          )}
+          {personas.length > 0 &&
+            personas.map((persona) => (
+              <IonRow>
+                <IonCol>
+                  <IonLabel>{persona.id}</IonLabel>
+                </IonCol>
+                <IonCol size="2">
+                  <IonLabel>{persona.nombre}</IonLabel>
+                </IonCol>
+                <IonCol>
+                  <IonLabel>{persona.apellido}</IonLabel>
+                </IonCol>
+                <IonCol size="2">
+                  <IonLabel>{persona.numeroDocumento}</IonLabel>
+                </IonCol>
+                <IonCol size="2">
+                  <IonLabel>{persona.tipoDocumento}</IonLabel>
+                </IonCol>
+                <IonCol size="2">
+                  <IonLabel>{persona.fechaNacimiento}</IonLabel>
+                </IonCol>
+                <IonCol>
+                  <IonIcon icon={pencil} color="primary" />
+                </IonCol>
+                <IonCol>
+                  <IonIcon icon={trash} color="danger" />
+                </IonCol>
+              </IonRow>
+            ))}
         </IonGrid>
       </IonContent>
     </IonPage>
