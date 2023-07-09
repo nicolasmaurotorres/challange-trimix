@@ -47,20 +47,23 @@ const HomePage: React.FC = () => {
     if (
       data.nombre &&
       data.tipoDocumento &&
-      data.tipoDocumento !== TipoDocumentoEnum[TipoDocumentoEnum.Todos]
+      TipoDocumentoEnum[data.tipoDocumento] !==
+        TipoDocumentoEnum[TipoDocumentoEnum.Todos]
     ) {
       url += "?nombre=" + data.nombre + "&tipoDocumento=" + data.tipoDocumento;
     }
     if (
       data.nombre &&
-      data.tipoDocumento === TipoDocumentoEnum[TipoDocumentoEnum.Todos]
+      TipoDocumentoEnum[data.tipoDocumento] ===
+        TipoDocumentoEnum[TipoDocumentoEnum.Todos]
     ) {
       url += "?nombre=" + data.nombre;
     }
     if (
       !data.nombre &&
       data.tipoDocumento &&
-      data.tipoDocumento !== TipoDocumentoEnum[TipoDocumentoEnum.Todos]
+      TipoDocumentoEnum[data.tipoDocumento] !==
+        TipoDocumentoEnum[TipoDocumentoEnum.Todos]
     ) {
       url += "?tipoDocumento=" + data.tipoDocumento;
     }
