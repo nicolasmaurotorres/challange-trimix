@@ -19,10 +19,19 @@ import AxiosInstance from "../requests/AxiosInstance";
 import { useHistory, useLocation, useParams } from "react-router";
 import { TipoDocumentoEnumDto } from "../types/TipoDocumentoTypes";
 
+const initData: PersonaDto = {
+  id: -1,
+  nombre: "",
+  apellido: "",
+  fechaNacimiento: "",
+  numeroDocumento: "",
+  tipoDocumento: TipoDocumentoEnumDto.Dni,
+};
+
 const PersonaDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [persona, setPersona] = useState<PersonaDto>();
+  const [persona, setPersona] = useState<PersonaDto>(initData);
   const history = useHistory();
   const location = useLocation();
 
@@ -89,6 +98,7 @@ const PersonaDetailPage: React.FC = () => {
                     required: true,
                   }}
                   render={({ field }) => (
+                    // @ts-ignore
                     <IonInput
                       {...field}
                       max={20}
@@ -118,6 +128,7 @@ const PersonaDetailPage: React.FC = () => {
                   control={control}
                   rules={{ required: true }}
                   render={({ field }) => (
+                    // @ts-ignore
                     <IonInput
                       {...field}
                       fill="outline"
@@ -179,6 +190,7 @@ const PersonaDetailPage: React.FC = () => {
                   control={control}
                   rules={{ required: true }}
                   render={({ field }) => (
+                    // @ts-ignore
                     <IonInput
                       {...field}
                       fill="outline"
@@ -213,6 +225,7 @@ const PersonaDetailPage: React.FC = () => {
                   control={control}
                   rules={{ required: true }}
                   render={({ field }) => (
+                    // @ts-ignore
                     <IonInput
                       {...field}
                       name="fechaNacimiento"

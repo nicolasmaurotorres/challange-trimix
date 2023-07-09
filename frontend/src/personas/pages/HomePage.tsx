@@ -150,6 +150,7 @@ const HomePage: React.FC = () => {
                       name="nombre"
                       control={control}
                       render={({ field }) => (
+                        // @ts-ignore
                         <IonInput
                           {...field}
                           name="nombre"
