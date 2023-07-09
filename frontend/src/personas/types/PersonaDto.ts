@@ -1,7 +1,7 @@
-import TipoDocumentoEnumDto from "./TipoDocumentoEnum";
+import { TipoDocumentoEnumDto } from "./TipoDocumentoTypes";
 
 interface PersonaDto {
-  id: number;
+  id?: number;
   nombre: string;
   apellido: string;
   fechaNacimiento: string;

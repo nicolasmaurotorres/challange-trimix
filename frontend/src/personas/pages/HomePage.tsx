@@ -10,27 +10,23 @@ import {
   IonLabel,
   IonPage,
   IonRow,
-  IonSelect,
-  IonSelectOption,
   IonTitle,
 } from "@ionic/react";
 import { filter, addCircle, closeCircle, pencil, trash } from "ionicons/icons";
 import PersonaDto from "../types/PersonaDto";
-import TipoDocumentoEnumDto from "../types/TipoDocumentoEnum";
-//import styles from "./HomePage.module.scss";
-
-enum TipoDocumentoEnum {
-  todos,
-  Dni,
-  Cédula,
-  Pasaporte,
-}
+import { useHistory } from "react-router";
+import {
+  TipoDocumentoEnum,
+  TipoDocumentoEnumDto,
+} from "../types/TipoDocumentoTypes";
+import TipoDocumentoIonSelect from "../components/TipoDocumentoIonSelect";
 
 const HomePage: React.FC = () => {
+  const history = useHistory();
   const [showFilters, setShowFilters] = useState<boolean>(false);
   const [nameFilter, setNameFilter] = useState<string | undefined>(undefined);
   const [tipoDocumentoFilter, setTipoDocumentoFilter] =
-    useState<TipoDocumentoEnum>(TipoDocumentoEnum.todos);
+    useState<TipoDocumentoEnum>(TipoDocumentoEnum.Todos);
   const [personas, setPersonas] = useState<PersonaDto[]>([]);
 
   useEffect(() => {
@@ -41,7 +37,7 @@ const HomePage: React.FC = () => {
         apellido: "guarani",
         fechaNacimiento: "2020-01-01",
         numeroDocumento: "12345678",
-        tipoDocumento: TipoDocumentoEnumDto.dni,
+        tipoDocumento: TipoDocumentoEnumDto.Dni,
       },
     ]);
   }, []);
@@ -84,23 +80,11 @@ const HomePage: React.FC = () => {
                 </IonCol>
                 <IonCol size="6">
                   <IonItem>
-                    <IonSelect
-                      fill="outline"
-                      interface="popover"
-                      label-placement="floating"
-                      label="Tipo Documento"
+                    <TipoDocumentoIonSelect
+                      isFiltro
                       value={tipoDocumentoFilter}
-                      onIonChange={(e) => {
-                        setTipoDocumentoFilter(e.detail.value!);
-                      }}
-                    >
-                      <IonSelectOption value="todos">Todos</IonSelectOption>
-                      <IonSelectOption value="Dni">Dni</IonSelectOption>
-                      <IonSelectOption value="Cédula">Cédula</IonSelectOption>
-                      <IonSelectOption value="Pasaporte">
-                        Pasaporte
-                      </IonSelectOption>
-                    </IonSelect>
+                      setValue={setTipoDocumentoFilter}
+                    ></TipoDocumentoIonSelect>
                   </IonItem>
                 </IonCol>
               </IonRow>
@@ -141,7 +125,9 @@ const HomePage: React.FC = () => {
                 icon={addCircle}
                 size="large"
                 color="primary"
-                onClick={() => {}}
+                onClick={() => {
+                  history.push("/personas");
+                }}
               ></IonIcon>
             </IonCol>
           </IonRow>
