@@ -17,7 +17,7 @@ const opcionesDto: TipoDocumentoOpciones[] = [
 ];
 
 const opcionesFiltro: TipoDocumentoOpciones[] = [
-  { label: "Todos", value: "todos" },
+  { label: "Todos", value: "Todos" },
   { label: "Dni", value: "Dni" },
   { label: "Cédula", value: "Cédula" },
   { label: "Pasaporte", value: "Pasaporte" },

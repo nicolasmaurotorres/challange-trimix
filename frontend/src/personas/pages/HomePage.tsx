@@ -7,41 +7,78 @@ import {
   IonIcon,
   IonInput,
   IonItem,
-  IonLabel,
   IonPage,
   IonRow,
   IonTitle,
 } from "@ionic/react";
-import { filter, addCircle, closeCircle, pencil, trash } from "ionicons/icons";
+import { filter, addCircle, closeCircle } from "ionicons/icons";
 import PersonaDto from "../types/PersonaDto";
 import { useHistory } from "react-router";
-import {
-  TipoDocumentoEnum,
-  TipoDocumentoEnumDto,
-} from "../types/TipoDocumentoTypes";
+import { TipoDocumentoEnum } from "../types/TipoDocumentoTypes";
 import TipoDocumentoIonSelect from "../components/TipoDocumentoIonSelect";
 import RowPersona from "../components/RowPersona";
 import HeaderPersona from "../components/HeaderPersona";
+import AxiosInstance from "../requests/AxiosInstance";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 const HomePage: React.FC = () => {
   const history = useHistory();
+
   const [showFilters, setShowFilters] = useState<boolean>(false);
   const [nameFilter, setNameFilter] = useState<string | undefined>(undefined);
   const [tipoDocumentoFilter, setTipoDocumentoFilter] =
     useState<TipoDocumentoEnum>(TipoDocumentoEnum.Todos);
   const [personas, setPersonas] = useState<PersonaDto[]>([]);
 
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      nombre: "",
+      tipoDocumento: TipoDocumentoEnum.Todos,
+    },
+  });
+
+  const onSubmit: SubmitHandler<{
+    nombre: string;
+    tipoDocumento: TipoDocumentoEnum;
+  }> = async (data) => {
+    let url: string = "/personas";
+    if (
+      data.nombre &&
+      data.tipoDocumento &&
+      data.tipoDocumento !== TipoDocumentoEnum[TipoDocumentoEnum.Todos]
+    ) {
+      url += "?nombre=" + data.nombre + "&tipoDocumento=" + data.tipoDocumento;
+    }
+    if (
+      data.nombre &&
+      data.tipoDocumento === TipoDocumentoEnum[TipoDocumentoEnum.Todos]
+    ) {
+      url += "?nombre=" + data.nombre;
+    }
+    if (
+      !data.nombre &&
+      data.tipoDocumento &&
+      data.tipoDocumento !== TipoDocumentoEnum[TipoDocumentoEnum.Todos]
+    ) {
+      url += "?tipoDocumento=" + data.tipoDocumento;
+    }
+
+    const resp = await AxiosInstance.get(url);
+    if (resp.status >= 200 && resp.status < 300) {
+      setPersonas(resp.data);
+      history.goBack();
+    }
+  };
+
+  const _fetchPersonas = async () => {
+    const resp = await AxiosInstance.get("/personas");
+    if (resp.status >= 200 && resp.status < 300) {
+      setPersonas(resp.data);
+    }
+  };
+
   useEffect(() => {
-    setPersonas([
-      {
-        id: 1,
-        nombre: "pepe",
-        apellido: "guarani",
-        fechaNacimiento: "2020-01-01",
-        numeroDocumento: "12345678",
-        tipoDocumento: TipoDocumentoEnumDto.Dni,
-      },
-    ]);
+    _fetchPersonas();
   }, []);
 
   return (
@@ -64,44 +101,65 @@ const HomePage: React.FC = () => {
                     onClick={() => {
                       setShowFilters(!showFilters);
                     }}
-                  ></IonIcon>
+                  />
                 </IonCol>
               </IonRow>
-              <IonRow>
-                <IonCol size="6">
-                  <IonInput
-                    fill="outline"
-                    labelPlacement="floating"
-                    label="Nombre"
-                    type="text"
-                    value={nameFilter}
-                    onIonInput={(e) => {
-                      setNameFilter(e.detail.value!);
-                    }}
-                  ></IonInput>
-                </IonCol>
-                <IonCol size="6">
-                  <IonItem>
-                    <TipoDocumentoIonSelect
-                      name="tipoDocumento"
-                      isFiltro
-                      value={tipoDocumentoFilter}
-                      setValue={setTipoDocumentoFilter}
-                    ></TipoDocumentoIonSelect>
-                  </IonItem>
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol
-                  offsetXl="11"
-                  offsetXs="9"
-                  offsetLg="10"
-                  offsetSm="10"
-                  offsetMd="10"
-                >
-                  <IonButton>Buscar</IonButton>
-                </IonCol>
-              </IonRow>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <IonRow>
+                  <IonCol size="6">
+                    <Controller
+                      name="nombre"
+                      control={control}
+                      render={({ field }) => (
+                        <IonInput
+                          {...field}
+                          name="nombre"
+                          fill="outline"
+                          labelPlacement="floating"
+                          label="Nombre"
+                          type="text"
+                          value={nameFilter}
+                          onIonInput={(e) => {
+                            setNameFilter(e.detail.value!);
+                            field.onChange(e.detail.value!);
+                          }}
+                        />
+                      )}
+                    />
+                  </IonCol>
+                  <IonCol size="6">
+                    <IonItem>
+                      <Controller
+                        name="tipoDocumento"
+                        control={control}
+                        render={({ field }) => (
+                          <TipoDocumentoIonSelect
+                            {...field}
+                            name="tipoDocumento"
+                            isFiltro
+                            value={tipoDocumentoFilter}
+                            setValue={(value) => {
+                              setTipoDocumentoFilter(value);
+                              field.onChange(value);
+                            }}
+                          />
+                        )}
+                      />
+                    </IonItem>
+                  </IonCol>
+                </IonRow>
+                <IonRow>
+                  <IonCol
+                    offsetXl="11"
+                    offsetXs="9"
+                    offsetLg="10"
+                    offsetSm="10"
+                    offsetMd="10"
+                  >
+                    <IonButton type="submit">Buscar</IonButton>
+                  </IonCol>
+                </IonRow>
+              </form>
             </>
           )}
 
@@ -118,7 +176,7 @@ const HomePage: React.FC = () => {
                 onClick={() => {
                   setShowFilters(!showFilters);
                 }}
-              ></IonIcon>
+              />
             </IonCol>
             <IonCol
               size="2"
@@ -131,7 +189,7 @@ const HomePage: React.FC = () => {
                 onClick={() => {
                   history.push("/personas");
                 }}
-              ></IonIcon>
+              />
             </IonCol>
           </IonRow>
           <HeaderPersona />

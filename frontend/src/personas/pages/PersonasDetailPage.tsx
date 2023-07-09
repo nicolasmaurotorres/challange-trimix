@@ -16,6 +16,8 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import PersonaDto from "../types/PersonaDto";
 import { TipoDocumentoEnumDto } from "../types/TipoDocumentoTypes";
 import TipoDocumentoIonSelect from "../components/TipoDocumentoIonSelect";
+import AxiosInstance from "../requests/AxiosInstance";
+import { useHistory } from "react-router";
 
 const initData: PersonaDto = {
   nombre: "",
@@ -30,7 +32,7 @@ const PersonaDetailPage: React.FC = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<PersonaDto>({
     defaultValues: {
       nombre: "",
       apellido: "",
@@ -39,9 +41,14 @@ const PersonaDetailPage: React.FC = () => {
       tipoDocumento: TipoDocumentoEnumDto.Dni,
     },
   });
-  const onSubmit: SubmitHandler<PersonaDto> = (data) => {
-    console.log("personaState", persona);
-    console.log("personaData", data);
+
+  const history = useHistory();
+
+  const onSubmit: SubmitHandler<PersonaDto> = async (data) => {
+    const resp = await AxiosInstance.post("/personas", data);
+    if (resp.status >= 200 && resp.status < 300) {
+      history.goBack();
+    }
   };
 
   const [persona, setPersona] = useState<PersonaDto>(initData);
