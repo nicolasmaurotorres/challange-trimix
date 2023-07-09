@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  IonAlert,
   IonButton,
   IonCol,
   IonContent,
@@ -29,6 +30,7 @@ const HomePage: React.FC = () => {
   const [tipoDocumentoFilter, setTipoDocumentoFilter] =
     useState<TipoDocumentoEnum>(TipoDocumentoEnum.Todos);
   const [personas, setPersonas] = useState<PersonaDto[]>([]);
+  const [personaToDelete, setPersonaToDelete] = useState<PersonaDto>();
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
@@ -81,9 +83,43 @@ const HomePage: React.FC = () => {
     _fetchPersonas();
   }, []);
 
+  const _getNombreABorrar = () => {
+    return personaToDelete && personas?.length > 0
+      ? personas.filter((item) => item.id === personaToDelete?.id)[0].nombre
+      : "";
+  };
+
   return (
     <IonPage>
       <IonContent fullscreen>
+        <IonAlert
+          isOpen={personaToDelete !== undefined ? true : false}
+          header="Atencion!"
+          subHeader="Vas a borrar a la persona"
+          message={`Esta seguro que quiere borrar a ${_getNombreABorrar()} ?`}
+          buttons={[
+            {
+              text: "Cancel",
+              role: "cancel",
+              handler: () => {
+                setPersonaToDelete(undefined);
+              },
+            },
+            {
+              text: "OK",
+              role: "destructive",
+              handler: async () => {
+                await AxiosInstance.delete("/personas/" + personaToDelete?.id);
+                setPersonaToDelete(undefined);
+                setPersonas(
+                  personas.filter((item) => item.id !== personaToDelete?.id)
+                );
+              },
+            },
+          ]}
+          onDidDismiss={() => setPersonaToDelete(undefined)}
+        ></IonAlert>
+
         <IonGrid>
           {showFilters && (
             <>
@@ -203,8 +239,9 @@ const HomePage: React.FC = () => {
           {personas.length > 0 &&
             personas.map((persona) => (
               <RowPersona
+                setPersonaToDelete={setPersonaToDelete}
                 key={persona.id}
-                id={persona.id}
+                id={persona.id!}
                 nombre={persona.nombre}
                 apellido={persona.apellido}
                 fechaNacimiento={persona.fechaNacimiento}
