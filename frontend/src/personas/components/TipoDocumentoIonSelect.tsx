@@ -47,11 +47,15 @@ const TipoDocumentoIonSelect: React.FC<TipoDocumentoIonSelectProps> = ({
     >
       {isFiltro &&
         opcionesFiltro.map((item) => (
-          <IonSelectOption value={item.value}>{item.label}</IonSelectOption>
+          <IonSelectOption key={item.value} value={item.value}>
+            {item.label}
+          </IonSelectOption>
         ))}
       {!isFiltro &&
         opcionesDto.map((item) => (
-          <IonSelectOption value={item.value}>{item.label}</IonSelectOption>
+          <IonSelectOption key={item.value} value={item.value}>
+            {item.label}
+          </IonSelectOption>
         ))}
     </IonSelect>
   );
