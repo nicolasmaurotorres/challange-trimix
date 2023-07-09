@@ -1,5 +1,3 @@
-use challenge;
-
 CREATE TABLE IF NOT EXISTS `Personas`(
 `perId` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 `perNombre` VARCHAR(20) NOT NULL,

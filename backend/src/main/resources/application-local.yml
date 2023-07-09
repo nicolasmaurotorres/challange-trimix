@@ -2,13 +2,14 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: 123456
-    url: jdbc:mysql://localhost:33060/challenge?useSSL=false&allowPublicKeyRetrieval=true
-    username: api-user
+    url: jdbc:mysql://localhost:33060/challenge?useSSL=false&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
+    username: root
   flyway:
     password: 123456
-    url: jdbc:mysql://localhost:33060/challenge?useSSL=false&allowPublicKeyRetrieval=true
-    user: api-user
+    url: jdbc:mysql://localhost:33060/challenge?useSSL=false&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
+    user: root
     baselineOnMigrate: true
+    schemas: challenge
     locations: filesystem:backend/src/main/resources/db/migration
   devtools:
     livereload:
