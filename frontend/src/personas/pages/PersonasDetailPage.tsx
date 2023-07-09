@@ -77,7 +77,6 @@ const PersonaDetailPage: React.FC = () => {
                       value={persona.nombre}
                       name="nombre"
                       onIonInput={(e) => {
-                        console.log("console.log nombre in onIonInput");
                         setPersona({ ...persona, nombre: e.detail.value! });
                         field.onChange(e.detail.value!);
                       }}
@@ -124,8 +123,8 @@ const PersonaDetailPage: React.FC = () => {
                   control={control}
                   rules={{
                     required: true,
-                    validate: (value) => {
-                      return value !== "0"; // eslint-disable-line
+                    validate: (value, formState) => {
+                      return value + "" !== "0";
                     },
                   }}
                   render={({ field }) => (
