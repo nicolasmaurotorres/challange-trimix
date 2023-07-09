@@ -5,6 +5,7 @@ import {
   IonGrid,
   IonInput,
   IonItem,
+  IonLabel,
   IonPage,
   IonRow,
   IonTitle,
@@ -30,9 +31,18 @@ const PersonaDetailPage: React.FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    defaultValues: initData,
+    defaultValues: {
+      nombre: "",
+      apellido: "",
+      fechaNacimiento: "",
+      numeroDocumento: "",
+      tipoDocumento: TipoDocumentoEnumDto.Dni,
+    },
   });
-  const onSubmit: SubmitHandler<PersonaDto> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<PersonaDto> = (data) => {
+    console.log("personaState", persona);
+    console.log("personaData", data);
+  };
 
   const [persona, setPersona] = useState<PersonaDto>(initData);
   return (
@@ -52,37 +62,58 @@ const PersonaDetailPage: React.FC = () => {
                 <Controller
                   name="nombre"
                   control={control}
-                  render={() => (
+                  rules={{
+                    required: true,
+                  }}
+                  render={({ field }) => (
                     <IonInput
+                      {...field}
+                      max={20}
+                      maxlength={20}
                       fill="outline"
                       labelPlacement="floating"
                       label="Nombre"
                       type="text"
                       value={persona.nombre}
+                      name="nombre"
                       onIonInput={(e) => {
+                        console.log("console.log nombre in onIonInput");
                         setPersona({ ...persona, nombre: e.detail.value! });
+                        field.onChange(e.detail.value!);
                       }}
                     />
                   )}
                 />
+                {errors.nombre && (
+                  <IonLabel color="danger">Este campo es requerido</IonLabel>
+                )}
               </IonCol>
               <IonCol size="6">
                 <Controller
                   name="apellido"
                   control={control}
-                  render={() => (
+                  rules={{ required: true }}
+                  render={({ field }) => (
                     <IonInput
+                      {...field}
                       fill="outline"
+                      max={20}
+                      maxlength={20}
                       labelPlacement="floating"
                       label="Apellido"
                       type="text"
-                      value={initData.apellido}
+                      name="apellido"
+                      value={persona.apellido}
                       onIonInput={(e) => {
                         setPersona({ ...persona, apellido: e.detail.value! });
+                        field.onChange(e.detail.value!);
                       }}
                     />
                   )}
                 />
+                {errors.apellido && (
+                  <IonLabel color="danger">Este campo es requerido</IonLabel>
+                )}
               </IonCol>
             </IonRow>
 
@@ -91,60 +122,88 @@ const PersonaDetailPage: React.FC = () => {
                 <Controller
                   name="tipoDocumento"
                   control={control}
-                  render={() => (
+                  rules={{
+                    required: true,
+                    validate: (value) => {
+                      return value !== "0"; // eslint-disable-line
+                    },
+                  }}
+                  render={({ field }) => (
                     <TipoDocumentoIonSelect
+                      {...field}
+                      name="tipoDocumento"
                       isFiltro={false}
                       value={persona.tipoDocumento}
-                      setValue={(e) =>
-                        setPersona({ ...persona, tipoDocumento: e })
-                      }
+                      setValue={(value) => {
+                        setPersona({ ...persona, tipoDocumento: value });
+                        field.onChange(value);
+                      }}
                     />
                   )}
                 />
+                {errors.tipoDocumento && (
+                  <IonLabel color="danger">Este campo es requerido</IonLabel>
+                )}
               </IonCol>
               <IonCol size="6">
                 <Controller
                   name="numeroDocumento"
                   control={control}
-                  render={() => (
+                  rules={{ required: true }}
+                  render={({ field }) => (
                     <IonInput
+                      {...field}
                       fill="outline"
                       labelPlacement="floating"
                       label="Numero Documento"
                       type="text"
-                      value={initData.numeroDocumento}
+                      name="numeroDocumento"
+                      max={11}
+                      maxlength={11}
+                      value={persona.numeroDocumento}
                       onIonInput={(e) => {
                         setPersona({
                           ...persona,
                           numeroDocumento: e.detail.value!,
                         });
+                        field.onChange(e.detail.value!);
                       }}
                     />
                   )}
                 />
+                {errors.numeroDocumento && (
+                  <IonLabel color="danger">Este campo es requerido</IonLabel>
+                )}
               </IonCol>
             </IonRow>
             <IonRow>
               <IonCol size="6">
                 <Controller
-                  name="numeroDocumento"
+                  name="fechaNacimiento"
                   control={control}
-                  render={() => (
+                  rules={{ required: true }}
+                  render={({ field }) => (
                     <IonInput
+                      {...field}
+                      name="fechaNacimiento"
                       fill="outline"
                       labelPlacement="floating"
                       label="Fecha Nacimiento"
                       type="date"
-                      value={initData.numeroDocumento}
-                      onIonInput={(e) => {
+                      value={persona.fechaNacimiento}
+                      onIonChange={(e) => {
                         setPersona({
                           ...persona,
-                          numeroDocumento: e.detail.value!,
+                          fechaNacimiento: e.detail.value!,
                         });
+                        field.onChange(e.detail.value!);
                       }}
                     />
                   )}
                 />
+                {errors.fechaNacimiento && (
+                  <IonLabel color="danger">Este campo es requerido</IonLabel>
+                )}
               </IonCol>
               <IonCol offset="5" className="ion-padding-vertical">
                 <IonButton type="submit" fill="solid">

@@ -27,15 +27,18 @@ interface TipoDocumentoIonSelectProps {
   value: TipoDocumentoEnumDto | TipoDocumentoEnum;
   setValue: Dispatch<SetStateAction<any>>;
   isFiltro: boolean;
+  name: string;
 }
 
 const TipoDocumentoIonSelect: React.FC<TipoDocumentoIonSelectProps> = ({
   value,
   setValue,
   isFiltro,
+  name,
 }) => {
   return (
     <IonSelect
+      name={name}
       fill="outline"
       interface="popover"
       label-placement="floating"

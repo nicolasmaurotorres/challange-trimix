@@ -83,6 +83,7 @@ const HomePage: React.FC = () => {
                 <IonCol size="6">
                   <IonItem>
                     <TipoDocumentoIonSelect
+                      name="tipoDocumento"
                       isFiltro
                       value={tipoDocumentoFilter}
                       setValue={setTipoDocumentoFilter}
