@@ -1,6 +1,6 @@
 ## Para builder la imagen
 
-- docker build . -t challente-trimix
+- docker build . -t challenge-trimix
 
 ## Para crear el contenedor
 
