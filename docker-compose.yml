@@ -20,7 +20,6 @@ services:
         volumes:
           - database-vol:/var/lib/mysql
     backend:
-        restart: on-failure
         container_name: backend-challenge-trimix
         env_file: ./.env
         build: 

@@ -64,3 +64,4 @@ frontend/yarn-error.log*
 # Optional eslint cache
 frontend/.eslintcache
 backend/target
+backend/target/challenge-0.0.1-SNAPSHOT.jar
