@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+    database:
+        container_name: database-challenge-trimix
+        image: mysql
+        restart: always
+        cap_add:
+          - "SYS_NICE"
+        ports:
+            - 3306:3306
+        expose:
+          - 3306
+        environment:
+          - MYSQL_DATABASE=challenge
+          - MYSQL_USER=api-user
+          - MYSQL_PASSWORD=123456
+          - MYSQL_ROOT_PASSWORD=123456
+          - MYSQL_ROOT_USER=root
+        volumes:
+          - database-vol:/var/lib/mysql
+    backend:
+        restart: on-failure
+        container_name: backend-challenge-trimix
+        env_file: ./.env
+        build: 
+         dockerfile: ./backend/Dockerfile
+         context: .
+        ports:
+            - 8080:8080
+            - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
+        expose:
+          - 8080
+        depends_on: 
+            - frontend
+        volumes:
+          - .m2:/root/.m2
+        environment: 
+          SPRING_APPLICATION_JSON: '{
+              "spring.datasource.url":"jdbc:mysql://0.0.0.0:3306/challenge?useSSL=false&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true",
+              "spring.datasource.username" : "root",
+              "spring.datasource.password" : "123456",
+              "spring.datasource.driver-class-name": "com.mysql.cj.jdbc.Driver",
+              "spring.jpa.hibernate.ddl-auto" : "none"
+            }'
+        stdin_open: true
+        tty: true
+    frontend:
+        container_name: frontend-challenge-trimix
+        build: 
+          dockerfile: ./frontend/Dockerfile
+          context: .
+        ports:
+            - 8100:8100
+        expose:
+          - 8100
+        depends_on: 
+            - database
+   
+volumes:
+  database-vol:
+    driver: local

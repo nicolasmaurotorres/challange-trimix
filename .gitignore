@@ -1,5 +1,5 @@
 backend/HELP.md
-backend/target/
+backend/target/*
 backend/!.mvn/wrapper/maven-wrapper.jar
 backend/!**/src/main/**/target/
 backend/!**/src/test/**/target/
@@ -63,3 +63,4 @@ frontend/yarn-error.log*
 
 # Optional eslint cache
 frontend/.eslintcache
+backend/target
