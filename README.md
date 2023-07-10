@@ -22,6 +22,7 @@ y luego apretar F5 para levantarlo
 
 correr el comando
 `npm i -g @ionic/cli`
+`npm i`
 
 correr el comando
 `npm start`
